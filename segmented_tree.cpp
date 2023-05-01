@@ -48,7 +48,6 @@ void build(int *a){
     tl and tr are the current vertex ranges while l and r are the query ranges
 */
 int query(int v, int tl, int tr, int l, int r) {
-    cout << "QUERYING: " << tl << " to " << tr << "\n";
     if (l > r) 
         return 0;
     if (l == tl && r == tr) {
