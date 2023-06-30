@@ -7,64 +7,37 @@
 
 using namespace std;
 using ll = long long;
+    
+string s1, s2;
 
-int max(int a, int b){return a > b ? a : b;}
-
-int LCS(string a, string b, int i){
-    int ans = 0;
-    int la = a.length();
-    int lb = b.length();
-
-    if(la == 0 || lb == 0){
-        return i;
+int recurse(int i, int j, int count){
+    if(i == 0 || j == 0) return count;
+    if(s1[i] == s2[j]){
+        return recurse(i - 1, j - 1, count + 1);
     }
-
-    string na = a.substr(0, la - 1);
-    string nb = b.substr(0, lb - 1);
-
-    if(a[la - 1] == b[lb - 1]){
-        ans = LCS(na, nb, i + 1);
-    }else{
-        ans = max(LCS(na, b, i), LCS(a, nb, i));
-    }
-    return ans;
+    return max(recurse(i - 1, j, count), recurse(i, j -1, count));
 }
 
-void solve(){
-    string a, b;
-    cin >> a >> b;
-    int la = a.length();
-    int lb = b.length();
-
-    /*
-    DP approach:
-
-    Instead of calculating top down, we calculate bottom up.
-
-    For example:
-        ABCBDAB
-        BDCABA
-
-        The first loop checks the LCS for A and BDCABA.
-        The second loop checks the LCS for AB and BDCABA.
-        etc...
-
-    It essentially keeps track of the LCS at each index of the two strings
-    */
-    vector<vector<int>> dp (la + 1, vector<int>(lb + 1));
-
-    for(int i = 1; i <= la; i++){
-        for(int j = 1; j <= lb; j++){
-            if(a[i - 1] == b[j - 1]){
+int dp(){
+    int n = s1.length();
+    int m = s2.length();
+    vector<vector<int>> dp (n + 1, vector<int>(m + 1));
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            if(s1[i] == s2[j]){
                 dp[i][j] = dp[i - 1][j - 1] + 1;
             }else{
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
             }
         }
     }
-    
-    cout << LCS(a, b, 0) << "\n";
-    cout << dp[la][lb] << "\n";
+    return dp[n][m];
+}
+
+void solve(){
+    cin >> s1 >> s2;
+    cout << recurse(s1.length(), s2.length(), 0) << "\n";
+    cout << dp() << "\n";
 }
 
 int main(void){
