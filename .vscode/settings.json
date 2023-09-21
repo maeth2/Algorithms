@@ -6,6 +6,7 @@
         "vector": "cpp",
         "utility": "cpp",
         "tuple": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "string": "cpp"
     }
 }
